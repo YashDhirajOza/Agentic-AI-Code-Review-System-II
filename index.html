@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic AI Test Generation System</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --warning: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .badge {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin: 0 0.5rem;
+            vertical-align: middle;
+        }
+        
+        nav {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            overflow-x: auto;
+        }
+        
+        nav li {
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        nav a {
+            display: block;
+            padding: 1rem;
+            text-align: center;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        nav a:hover, nav a.active {
+            background-color: #f1f8ff;
+            color: var(--secondary);
+            border-bottom: 3px solid var(--secondary);
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .section h3 {
+            color: var(--secondary);
+            margin: 1.5rem 0 1rem;
+        }
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h4 {
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+        
+        .card p {
+            color: #666;
+        }
+        
+        .code-block {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #3a3a3a;
+            padding: 0.5rem 1rem;
+            border-radius: 8px 8px 0 0;
+            margin: -1.5rem -1.5rem 1rem -1.5rem;
+        }
+        
+        .code-header span {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+        
+        .method {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .method h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .method .signature {
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .method .description {
+            margin-bottom: 1rem;
+            color: #555;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .comparison-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .comparison-table tr:hover {
+            background-color: #f1f8ff;
+        }
+        
+        .comparison-table .feature {
+            font-weight: 600;
+        }
+        
+        .comparison-table .check {
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .comparison-table .cross {
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .agent-architecture {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .agent-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-top: 4px solid var(--secondary);
+        }
+        
+        .agent-card h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .agent-card h4 i {
+            margin-right: 0.75rem;
+            color: var(--secondary);
+        }
+        
+        .agent-card ul {
+            padding-left: 1.5rem;
+        }
+        
+        .agent-card li {
+            margin-bottom: 0.5rem;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                flex-wrap: wrap;
+            }
+            
+            nav li {
+                min-width: 100px;
+            }
+            
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Agentic AI Test Generation System</h1>
+            <p>Intelligent, context-aware test generation that goes beyond simple code coverage</p>
+            <div style="margin-top: 1rem;">
+                <span class="badge">Python</span>
+                <span class="badge">LLM Integration</span>
+                <span class="badge">Test Automation</span>
+                <span class="badge">Semantic Analysis</span>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="#overview" class="active">Overview</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#gemini-agent">Gemini Agent</a></li>
+                <li><a href="#base-agent">Base Agent</a></li>
+                <li><a href="#workflow">Workflow</a></li>
+                <li><a href="#comparison">Comparison</a></li>
+                <li><a href="#roadmap">Roadmap</a></li>
+            </ul>
+        </nav>
+        
+        <section id="overview" class="section">
+            <h2>Project Overview</h2>
+            <p>The Agentic AI Test Generation System is an advanced solution that creates meaningful, context-aware test suites for Python codebases. It goes beyond simple code coverage to generate comprehensive tests that validate both functionality and security.</p>
+            
+            <div class="card-container">
+                <div class="card">
+                    <h4>Problem Statement</h4>
+                    <p>Current automated test generation tools focus primarily on code coverage and lack business logic understanding, security vulnerability testing, and semantic context awareness.</p>
+                </div>
+                
+                <div class="card">
+                    <h4>Solution Approach</h4>
+                    <p>An agentic AI system that combines multiple specialized agents to generate comprehensive, intelligent test suites that validate both functionality and security.</p>
+                </div>
+                
+                <div class="card">
+                    <h4>Key Innovations</h4>
+                    <p>Semantic understanding through LLMs, security-focused test generation, multi-agent validation, and integration with existing testing tools.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="architecture" class="section">
+            <h2>Multi-Agent Architecture</h2>
+            <p>The system employs several specialized agents that work together to generate comprehensive test suites:</p>
+            
+            <div class="agent-architecture">
+                <div class="agent-card">
+                    <h4><i class="fas fa-code"></i> Code Analysis Agent</h4>
+                    <p>Deep structural understanding of the codebase:</p>
+                    <ul>
+                        <li>Parse AST to identify functions and classes</li>
+                        <li>Extract function signatures and parameters</li>
+                        <li>Map dependencies and external API calls</li>
+                        <li>Trace data flow between components</li>
+                    </ul>
+                </div>
+                
+                <div class="agent-card">
+                    <h4><i class="fas fa-chess"></i> Test Strategy Agent</h4>
+                    <p>Intelligent test planning and prioritization:</p>
+                    <ul>
+                        <li>Analyze code complexity and risk factors</li>
+                        <li>Determine appropriate test types</li>
+                        <li>Map coverage requirements and goals</li>
+                        <li>Identify security-sensitive functions</li>
+                    </ul>
+                </div>
+                
+                <div class="agent-card">
+                    <h4><i class="fas fa-cogs"></i> Test Generation Agent</h4>
+                    <p>Create actual test implementations:</p>
+                    <ul>
+                        <li>Generate realistic test data</li>
+                        <li>Create mock objects and fixtures</li>
+                        <li>Generate edge case scenarios</li>
+                        <li>Handle different testing frameworks</li>
+                    </ul>
+                </div>
+                
+                <div class="agent-card">
+                    <h4><i class="fas fa-check-circle"></i> Validation Logic Agent</h4>
+                    <p>Create meaningful assertions and validations:</p>
+                    <ul>
+                        <li>Infer expected behaviors from code logic</li>
+                        <li>Generate assertions for return values</li>
+                        <li>Create state validation checks</li>
+                        <li>Design security validation tests</li>
+                    </ul>
+                </div>
+                
+                <div class="agent-card">
+                    <h4><i class="fas fa-star"></i> Test QA Agent</h4>
+                    <p>Ensure test quality and maintainability:</p>
+                    <ul>
+                        <li>Validate test correctness and executability</li>
+                        <li>Check for test redundancy</li>
+                        <li>Ensure proper test naming and documentation</li>
+                        <li>Assess test readability and clarity</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="gemini-agent" class="section">
+            <h2>Gemini LLM Agent</h2>
+            <p>The GeminiLLMAgent class integrates with Google's Gemini API to provide semantic understanding and test generation capabilities.</p>
+            
+            <div class="method">
+                <h4>Constructor</h4>
+                <div class="signature">__init__(self, api_key: str)</div>
+                <div class="description">
+                    Initializes the Gemini agent with the provided API key.
+                    Validates the API key and checks for required dependencies.
+                </div>
+            </div>
+            
+            <div class="method">
+                <h4>Semantic Analysis</h4>
+                <div class="signature">analyze_function_semantics(self, func_info: FunctionInfo, source_code: str) -> Dict[str, Any]</div>
+                <div class="description">
+                    Analyzes a Python function for semantic understanding using Gemini's language model.
+                    Returns a dictionary with:
+                    <ul>
+                        <li>business_logic_type</li>
+                        <li>semantic_tags</li>
+                        <li>risk_assessment</li>
+                        <li>expected_behaviors</li>
+                        <li>edge_cases</li>
+                        <li>security_concerns</li>
+                        <li>test_scenarios</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="method">
+                <h4>Test Scenario Generation</h4>
+                <div class="signature">generate_test_scenarios(self, func_info: FunctionInfo, semantic_analysis: Dict[str, Any]) -> List[Dict[str, Any]]</div>
+                <div class="description">
+                    Generates comprehensive test scenarios based on the semantic analysis.
+                    Scenarios cover:
+                    <ul>
+                        <li>Happy path scenarios</li>
+                        <li>Edge cases and boundary conditions</li>
+                        <li>Error conditions and exception handling</li>
+                        <li>Security test cases</li>
+                        <li>Integration scenarios</li>
+                        <li>Performance considerations</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="method">
+                <h4>Test Code Generation</h4>
+                <div class="signature">generate_test_code(self, scenario: Dict[str, Any], func_info: FunctionInfo, framework: TestFramework) -> str</div>
+                <div class="description">
+                    Generates executable test code for a specific scenario and testing framework.
+                    Produces complete, runnable test code with:
+                    <ul>
+                        <li>Proper imports</li>
+                        <li>Setup and teardown if needed</li>
+                        <li>Realistic test data</li>
+                        <li>Comprehensive assertions</li>
+                        <li>Error handling</li>
+                        <li>Explanatory comments</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>Example Usage</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Python Example</span>
+                </div>
+                <pre><code># Initialize the Gemini agent
+gemini_agent = GeminiLLMAgent(api_key="YOUR_API_KEY")
+
+# Analyze function semantics
+func_info = FunctionInfo(name="calculate_discount", ...)
+source_code = "def calculate_discount(price, discount_rate): ..."
+semantic_analysis = gemini_agent.analyze_function_semantics(func_info, source_code)
+
+# Generate test scenarios
+test_scenarios = gemini_agent.generate_test_scenarios(func_info, semantic_analysis)
+
+# Generate test code for a scenario
+test_code = gemini_agent.generate_test_code(
+    scenario=test_scenarios[0],
+    func_info=func_info,
+    framework=TestFramework.PYTEST
+)</code></pre>
+            </div>
+        </section>
+        
+        <section id="base-agent" class="section">
+            <h2>Base Agent Class</h2>
+            <p>The BaseAgent class provides the foundation for all specialized agents in the system.</p>
+            
+            <div class="method">
+                <h4>Constructor</h4>
+                <div class="signature">__init__(self, name: str, config: Dict[str, Any] = None)</div>
+                <div class="description">
+                    Initializes the agent with a name and optional configuration.
+                    Sets up logging and prepares the agent for processing.
+                </div>
+            </div>
+            
+            <div class="method">
+                <h4>LLM Integration</h4>
+                <div class="signature">set_llm_agent(self, llm_agent: GeminiLLMAgent)</div>
+                <div class="description">
+                    Sets the LLM agent that this agent will use for semantic analysis
+                    and test generation capabilities.
+                </div>
+            </div>
+            
+            <div class="method">
+                <h4>Processing Method</h4>
+                <div class="signature">@abstractmethod process(self, input_data: Any) -> Any</div>
+                <div class="description">
+                    Abstract method that must be implemented by concrete agents.
+                    Defines the core processing logic for the agent.
+                </div>
+            </div>
+            
+            <div class="method">
+                <h4>Logging</h4>
+                <div class="signature">log_activity(self, message: str, level: str = "INFO")</div>
+                <div class="description">
+                    Provides a standardized logging mechanism for all agents.
+                    Supports different log levels (INFO, WARNING, ERROR, etc.).
+                </div>
+            </div>
+            
+            <h3>Extending the Base Agent</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Python Example</span>
+                </div>
+                <pre><code>class TestGenerationAgent(BaseAgent):
+    def __init__(self, config=None):
+        super().__init__("TestGenerationAgent", config)
+        
+    def set_llm_agent(self, llm_agent):
+        super().set_llm_agent(llm_agent)
+        # Additional setup specific to this agent
+        
+    def process(self, input_data):
+        # Implement agent-specific processing logic
+        self.log_activity("Starting test generation process")
+        
+        # Use the LLM agent for semantic analysis
+        semantic_analysis = self.llm_agent.analyze_function_semantics(
+            input_data.func_info, 
+            input_data.source_code
+        )
+        
+        # Additional processing steps...
+        return generated_tests</code></pre>
+            </div>
+        </section>
+        
+        <section id="workflow" class="section">
+            <h2>System Workflow</h2>
+            <p>The test generation process follows a structured workflow:</p>
+            
+            <div class="card-container">
+                <div class="card">
+                    <h4>1. Code Analysis</h4>
+                    <p>Parse source code to extract functions, classes, and dependencies. Identify critical paths and security-sensitive areas.</p>
+                </div>
+                
+                <div class="card">
+                    <h4>2. Semantic Analysis</h4>
+                    <p>Use Gemini LLM to understand business logic, identify edge cases, and assess security concerns.</p>
+                </div>
+                
+                <div class="card">
+                    <h4>3. Test Strategy</h4>
+                    <p>Determine test priorities, types, and coverage goals based on risk assessment and business criticality.</p>
+                </div>
+            </div>
+            
+            <div class="card-container">
+                <div class="card">
+                    <h4>4. Scenario Generation</h4>
+                    <p>Create comprehensive test scenarios covering happy paths, edge cases, error conditions, and security tests.</p>
+                </div>
+                
+                <div class="card">
+                    <h4>5. Test Implementation</h4>
+                    <p>Generate executable test code for the target testing framework (pytest, unittest, etc.).</p>
+                </div>
+                
+                <div class="card">
+                    <h4>6. Quality Assurance</h4>
+                    <p>Validate generated tests for correctness, maintainability, and effectiveness.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="comparison" class="section">
+            <h2>Comparison with Existing Solutions</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Pynguin</th>
+                        <th>Hypothesis</th>
+                        <th>This System</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="feature">Coverage Focus</td>
+                        <td class="check">✅ High</td>
+                        <td class="cross">❌ Low</td>
+                        <td class="check">✅ High</td>
+                    </tr>
+                    <tr>
+                        <td class="feature">Semantic Understanding</td>
+                        <td class="cross">❌ None</td>
+                        <td class="cross">❌ Limited</td>
+                        <td class="check">✅ Advanced</td>
+                    </tr>
+                    <tr>
+                        <td class="feature">Security Testing</td>
+                        <td class="cross">❌ None</td>
+                        <td class="cross">❌ Manual</td>
+                        <td class="check">✅ Automated</td>
+                    </tr>
+                    <tr>
+                        <td class="feature">Business Logic</td>
+                        <td class="cross">❌ None</td>
+                        <td class="cross">❌ Manual</td>
+                        <td class="check">✅ Automated</td>
+                    </tr>
+                    <tr>
+                        <td class="feature">Multi-Agent Validation</td>
+                        <td class="cross">❌ None</td>
+                        <td class="cross">❌ None</td>
+                        <td class="check">✅ Core Feature</td>
+                    </tr>
+                    <tr>
+                        <td class="feature">LLM Integration</td>
+                        <td class="cross">❌ None</td>
+                        <td class="cross">❌ None</td>
+                        <td class="check">✅ Core Feature</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section id="roadmap" class="section">
+            <h2>Development Roadmap</h2>
+            
+            <div class="card-container">
+                <div class="card">
+                    <h4>Sprint 1-2: Foundation</h4>
+                    <ul>
+                        <li>Core agent architecture</li>
+                        <li>Basic AST analysis</li>
+                        <li>Simple test generation</li>
+                        <li>Framework integration</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h4>Sprint 3-4: Intelligence</h4>
+                    <ul>
+                        <li>LLM integration</li>
+                        <li>Semantic analysis</li>
+                        <li>Security-focused generation</li>
+                        <li>Quality validation</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h4>Sprint 5-6: Orchestration</h4>
+                    <ul>
+                        <li>Multi-agent coordination</li>
+                        <li>Cross-validation</li>
+                        <li>Confidence scoring</li>
+                        <li>Comprehensive reporting</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h4>Sprint 7-8: Polish</h4>
+                    <ul>
+                        <li>Performance optimization</li>
+                        <li>UI/CLI improvements</li>
+                        <li>Documentation</li>
+                        <li>Integration testing</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>Agentic AI Test Generation System &copy; 2023</p>
+            <p>Intelligent Test Generation Beyond Simple Coverage</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Smooth scrolling for navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                // Update active link
+                document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Update active link on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.section');
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            document.querySelectorAll('nav a').forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href') === `#${currentSection}`) {
+                    a.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
